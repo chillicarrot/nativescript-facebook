@@ -2,6 +2,7 @@ import * as application from "tns-core-modules/application";
 import { LoginResponse } from './login-response';
 import { FacebookAccessToken } from "./facebook-access-token";
 import { LoginBehavior } from "./login-behavior";
+import { initializePixel } from "./event-manager";
 
 const LOGIN_PERMISSIONS = ["public_profile", "email"];
 
@@ -39,6 +40,7 @@ export function init(fbId: string, fbLoginBehavior: LoginBehavior = LoginBehavio
   });
   let accessTokenTracker = new LogoutAccessTokenTracker();
   accessTokenTracker.startTracking();
+  initializePixel();
 }
 
 export function _registerLoginCallback(callback: Function) {
