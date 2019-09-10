@@ -4,6 +4,7 @@ node_modules/
 *.js
 *.js.map
 *.esm.json
+*.tns.json
 *.metadata.json
 *.log
 demo/**/*.js
@@ -16,6 +17,12 @@ demo-angular/**/*.js
 demo-angular/*.d.ts
 demo-angular/platforms/
 !demo/e2e-tests/*
+!demo-vue/app/app.js
 /src/platforms/android/nativescript_facebook.aar
 /src/*.tgz
 /publish/package/*.tgz
+/publish/package/**/*
+test-results.xml
+**/outputs
+**/mochawesome-report
+tests/e2e/reports

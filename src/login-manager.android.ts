@@ -1,11 +1,10 @@
 import * as application from "tns-core-modules/application";
 import { LoginResponse } from './login-response';
 import { FacebookAccessToken } from "./facebook-access-token";
-import { LoginBehavior } from "./login-behavior";
-declare let com: any;
 
 const LOGIN_PERMISSIONS = ["public_profile", "email"];
 
+export let onLoginCallback; // HACK: prevent compile error with angular + webpack
 export let onLogoutCallback;
 let androidApplication;
 let _act: android.app.Activity;
@@ -15,7 +14,7 @@ export function _registerLogoutCallback(callback: Function) {
   onLogoutCallback = callback;
 }
 
-export function init(fbId: string, fbLoginBehavior: LoginBehavior = LoginBehavior.LoginBehaviorBrowser) {
+export function init(fbId: string) {
   com.facebook.FacebookSdk.setAutoLogAppEventsEnabled(true);
   setAppId(fbId);
   androidApplication = application.android;
@@ -30,7 +29,7 @@ export function init(fbId: string, fbLoginBehavior: LoginBehavior = LoginBehavio
 
   // Workaround for firing the logout event in android:
   // https://stackoverflow.com/questions/30233284/how-to-add-a-logout-callback-for-facebook-sdk-in-android
-  let LogoutAccessTokenTracker = com.facebook.AccessTokenTracker.extend({
+  let LogoutAccessTokenTracker = (com.facebook.AccessTokenTracker as any).extend({
     onCurrentAccessTokenChanged: function (oldToken, newToken) {
       if (oldToken != null && newToken == null && onLogoutCallback) {
         onLogoutCallback();
@@ -44,7 +43,7 @@ export function init(fbId: string, fbLoginBehavior: LoginBehavior = LoginBehavio
 export function _registerLoginCallback(callback: Function) {
   let onLoginCallback = com.facebook.CallbackManager.Factory.create();
   _act = androidApplication.startActivity || androidApplication.foregroundActivity;
-  loginManager.registerCallback(onLoginCallback, new com.facebook.FacebookCallback({
+  loginManager.registerCallback(onLoginCallback, new com.facebook.FacebookCallback<any>({
 
     onSuccess: function (result) {
       let token = result.getAccessToken().getToken();
@@ -57,11 +56,11 @@ export function _registerLoginCallback(callback: Function) {
     },
     onError: function (e) {
       let errorMessage = "Error with Facebook";
-      if (e.getErrorMessage) {
-        errorMessage += ": " + e.getErrorMessage();
+      if (e['getErrorMessage']) {
+        errorMessage += ": " + e['getErrorMessage']();
       }
-      else if (e.getErrorCode) {
-        errorMessage += ": Code " + e.getErrorCode();
+      else if (e['getErrorCode']) {
+        errorMessage += ": Code " + e['getErrorCode']();
       }
       else {
         errorMessage += ": " + e;
@@ -114,8 +113,8 @@ export function getCurrentAccessToken() {
     accessToken = new FacebookAccessToken();
     accessToken.accessToken = sdkAccessToken.getToken();
     accessToken.userId = sdkAccessToken.getUserId();
-    accessToken.expirationDate = convertToISOStringDate(sdkAccessToken.getExpires().toGMTString());
-    accessToken.refreshDate = convertToISOStringDate(sdkAccessToken.getLastRefresh().toGMTString());
+    accessToken.expirationDate = convertToISOStringDate(sdkAccessToken.getExpires().getTime());
+    accessToken.refreshDate = convertToISOStringDate(sdkAccessToken.getLastRefresh().getTime());
   }
 
   return accessToken;
@@ -128,6 +127,10 @@ export function logout(callback: Function) {
   }
 }
 
-function convertToISOStringDate(GMTStringDate: string) {
-  return new Date(GMTStringDate).toISOString();
+function convertToISOStringDate(time: number) {
+  if (time != null && !isNaN(time) && isFinite(time)) {
+    return new Date(time).toISOString();
+  } else {
+    return "";
+  }
 }

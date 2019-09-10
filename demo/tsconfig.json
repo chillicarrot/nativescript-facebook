@@ -5,6 +5,7 @@
         "declaration": false,
         "removeComments": true,
         "noLib": false,
+        "sourceMap": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "lib": [
@@ -20,6 +21,7 @@
         "noImplicitReturns": true,
         "noImplicitUseStrict": false,
         "noFallthroughCasesInSwitch": true,
+        "skipLibCheck": true,
         "baseUrl": ".",
         "paths": {
             "*": [
