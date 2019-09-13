@@ -1,6 +1,7 @@
 .vscode/
 .idea/
 node_modules/
+*.js.orig
 *.js
 *.js.map
 *.esm.json
