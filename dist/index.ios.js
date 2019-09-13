@@ -26,4 +26,3 @@ var BaseDelegate = (function (_super) {
     BaseDelegate.ObjCProtocols = [UIApplicationDelegate];
     return BaseDelegate;
 }(UIResponder));
-applicationModule.ios.delegate = BaseDelegate;
