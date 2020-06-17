@@ -1,0 +1,59 @@
+{
+    "name": "nativescript-facebook",
+    "version": "1004.2.1",
+    "description": "NativeScript plugin, wrapper of native Facebook SDK for Android and iOS.",
+    "nativescript": {
+        "platforms": {
+            "android": "4.0.0",
+            "ios": "4.0.0"
+        }
+    },
+    "scripts": {
+        "tsc": "tsc -skipLibCheck",
+        "ngc": "node --max-old-space-size=8192 ./node_modules/.bin/ngc",
+        "build": "npm i && tsc && tns plugin build && npm run ngc",
+        "build.iosOnly": "npm i && tsc && npm run ngc",
+        "ci.tslint": "npm i && tslint '**/*.ts' --config '../tslint.json' --exclude '**/node_modules/**' --exclude '**/platforms/**'",
+        "prepublishOnly": "npm run build",
+        "plugin.tscwatch": "tsc -skipLibCheck -w",
+        "demo.ios": "npm i && npm run tsc && cd ../demo && tns run ios",
+        "demo.android": "npm i && npm run tsc && cd ../demo && tns run android",
+        "demo.ng.ios": "npm i && npm run tsc && cd ../demo-angular && tns run ios",
+        "demo.ng.android": "npm i && npm run tsc && cd ../demo-angular && tns run android",
+        "demo.vue.ios": "npm i && npm run tsc && cd ../demo-vue && tns run ios",
+        "demo.vue.android": "npm i && npm run tsc && cd ../demo-vue && tns run android"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/NativeScript/nativescript-facebook.git"
+    },
+    "keywords": [
+        "NativeScript",
+        "TypeScript",
+        "Android",
+        "iOS",
+        "Facebook"
+    ],
+    "author": "NativeScript Team",
+    "bugs": {
+        "url": "https://github.com/NativeScript/nativescript-facebook/issues"
+    },
+    "license": "Apache 2.0",
+    "typings": "index.d.ts",
+    "homepage": "https://github.com/NativeScript/nativescript-facebook",
+    "readmeFilename": "README.md",
+    "devDependencies": {
+        "tns-core-modules": "^6.0.0",
+        "tns-platform-declarations": "^6.0.0",
+        "typescript": "~3.5.3",
+        "nativescript-angular": "~8.20.0",
+        "nativescript-vue": "~2.4.0",
+        "@angular/core": "~8.2.0",
+        "@angular/common": "~8.2.0",
+        "@angular/compiler": "~8.2.0",
+        "@angular/compiler-cli": "~8.2.0",
+        "rxjs": "^6.3.3",
+        "zone.js": "~0.8.26",
+        "tslint": "~5.11.0"
+    }
+}
